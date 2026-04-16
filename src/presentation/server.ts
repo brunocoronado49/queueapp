@@ -1,4 +1,6 @@
+import path from 'path';
 import express, { Router } from 'express';
+import { regex } from '../config/regex';
 
 interface Options {
   port: number;
@@ -18,9 +20,11 @@ export class Server {
     this.port = port;
     this.routes = routes;
     this.publicPath = public_path;
+
+    this.configure();
   }
 
-  public async start() {
+  private configure() {
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
 
@@ -28,6 +32,13 @@ export class Server {
 
     this.app.use(this.routes);
 
+    this.app.get(regex, (req, res) => {
+      const indexPath = path.join(__dirname + `../../${this.publicPath}/index.html`);
+      res.sendFile(indexPath);
+    });
+  }
+
+  public async start() {
     this.serverListener = this.app.listen(this.port, () => {
       console.log(`Server running on port: ${this.port}`);
     });
