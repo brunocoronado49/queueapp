@@ -1,11 +1,12 @@
 import { Router } from 'express';
 import { TicketController } from './controller';
 import { TicketService } from '../services/ticket.service';
+import { WssService } from '../services/wss.service';
 
 export class TicketRoutes {
   static get routes(): Router {
     const router = Router();
-    const ticketService: TicketService = new TicketService();
+    const ticketService: TicketService = new TicketService(WssService.instance);
     const controller = new TicketController(ticketService);
 
     router.post('/', controller.createTicket);
