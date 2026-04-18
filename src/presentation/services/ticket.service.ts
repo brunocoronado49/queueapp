@@ -60,7 +60,7 @@ export class TicketService {
     const ticket = this.tickets.find(t => t.id === id);
     if (!ticket) return { status: 'error', message: 'Ticket not found' };
 
-    this.tickets.map(ticket => {
+    this.tickets = this.tickets.map(ticket => {
       if (ticket.id === id) {
         ticket.done = true;
       }
