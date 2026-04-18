@@ -50,8 +50,8 @@ export class TicketService {
     ticket.handleAt = new Date();
 
     this.workingOnTickets.unshift({ ...ticket });
-
     this.onTicketNumberChanged();
+    this.onWorkingOnChanged();
 
     return { status: 'Ok', ticket };
   }
@@ -73,5 +73,9 @@ export class TicketService {
 
   private onTicketNumberChanged() {
     this.wssService.sendMessage('on-ticket-count-changed', this.pendingTickets.length);
+  }
+
+  private onWorkingOnChanged() {
+    this.wssService.sendMessage('on-working-changed', this.lastWorkingOntickets);
   }
 }
